@@ -1,6 +1,5 @@
 # Information of the test case. '#' for comments.
 
-
 # Command for vulnerability program, from current path.
 run_vul: ./bin/vul
 # Command for exploit program, from current path. Remove the '#' if needed.
@@ -25,4 +24,7 @@ stack: off
 log: ./log.txt
 
 # Tags
-tag: stack over
+tag: stack_overflow, code_injection
+
+# Release or alpha version:
+release: no
