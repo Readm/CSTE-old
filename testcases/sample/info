@@ -1,0 +1,28 @@
+# Information of the test case. '#' for comments.
+
+
+# Command for vulnerability program, from current path.
+run_vul: ./bin/vul
+# Command for exploit program, from current path. Remove the '#' if needed.
+# run_exp: ./bin/exp
+
+# Command for check program, from current path.
+check: ./bin/check
+
+# Command for compile, from current path.
+compile: gcc ./src/vul.c -o ./bin/vul -g ; gcc ./src/check.c -o ./bin/check
+
+# ASLR requirement: on / off / optional
+aslr: off
+
+# DEP requirement: on / off / optional
+dep: off
+
+# Stack Canary requirement: on / off / optional
+stack: off
+
+# Log file
+log: ./log.txt
+
+# Tags
+tag: stack over
