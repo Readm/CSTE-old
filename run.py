@@ -61,13 +61,17 @@ class ui(cmd.Cmd):
         select_cases = [cases[i]  for i in indexes]
 
     def do_run(self, line):
+        if line.startswith('normal'):
+            attack = False
+        else:
+            attack = True
         if select_cases:
             for case in select_cases:
-                case.run()
+                case.run(attack=attack)
         else:
             print "No case selected, run all."
             for case in cases:
-                case.run()
+                case.run(attack=attack)
 
     def do_check(self, line):
         '''Check all selected.'''

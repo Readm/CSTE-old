@@ -83,7 +83,7 @@ class Case():
                         else: run_f.writelines(['act: normal'])
                     elif line.strip().lower().startswith('attach'):
                         if attach : run_f.writelines(['attach: yes'])
-                        else: run_f.writelines(['act: no'])
+                        else: run_f.writelines(['attach: no'])
                     else:
                         run_f.writelines([line])
 
