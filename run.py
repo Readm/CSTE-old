@@ -12,19 +12,17 @@ cases = []
 select_cases = []
 report_buf = []
 
+root_path=os.path.abspath('.')
+
 
 class ui(cmd.Cmd):
     prompt = "CSTE>"
     intro = '''简要说明：通过以下命令, 运行指定的漏洞程序
         show                      显示可以利用的所有程序
-        show type                 按类型进行划分显示
-        cat report name           查看产生的报告，默认查看report.txt，可指定报告的名字
-        save report name          保存产生的报告，默认保存为report.txt，可指定报告的名字
-        del report name           删除产生的报告，默认删除report.txt，可指定报告的名字
         select i                  选择第i个要执行的程序
         select i1 i2 ...          选择第i1,i2,i3...个要执行的程序
-        select all                选择所有的程序执行
-        select type name          选择name类型的程序
+        select name/path          选择名字或路径下所有程序
+        select tag name           选择name类型的程序
         run                       运行选择的漏洞程序,并进行攻击
         run normal                运行选择的漏洞程序,正常运行
         attach i                  附加调试第i个程序
@@ -35,9 +33,10 @@ class ui(cmd.Cmd):
 
     def do_reload(self, line):
         '''Reload the test cases.'''
-        global cases
+        global cases, root_path
+        root_path = os.path.abspath('.')
         if 'testcases' in os.listdir('.'):
-            path = os.path.abspath('.') + '/testcases'
+            path = root_path + '/testcases'
         else:
             print "No test cases found please run the script in the CSTE root path."  # TODO auto correct path.
             return True
@@ -45,10 +44,13 @@ class ui(cmd.Cmd):
 
     def do_show(self, line):  # TODO show in path/tag
         '''Show all available test cases.'''
-        global cases
+        global cases,select_cases
+
+
+        # no arg
         i = 1
         for case in cases:
-            print i, ':', case.path      # TODO delete the same path
+            print i, ':', case.path.replace(os.path.abspath(root_path+'/testcases')+'/','')
             i += 1
 
     def do_guide(self, line):
@@ -57,8 +59,17 @@ class ui(cmd.Cmd):
     def do_select(self, line):
         '''Select by number/path/tag'''
         global cases,select_cases
-        indexes = [int(i)-1 for i in line.split()]
-        select_cases = [cases[i]  for i in indexes]
+        if line[0] in '0123456789':
+            indexes = [int(i)-1 for i in line.split()]
+            select_cases = [cases[i]  for i in indexes]
+        elif line.startswith('tag'):
+            select_cases = [case for case in cases if line.split(None,1)[1].strip() in case.tags]
+        else:   # path
+            select_cases = [case for case in cases if
+                case.path.startswith(os.path.abspath(root_path+'/testcases/'+line.strip()))]
+            pass
+
+        print "Now selected %d cases" % len(select_cases)
 
     def do_run(self, line):
         if line.startswith('normal'):
@@ -91,17 +102,14 @@ class ui(cmd.Cmd):
     def do_add(self, line):
         '''Add cases after select'''
         print '''Not implement yet.'''
-        pass
 
     def do_remove(self, line):
         '''Remove cases after select'''
         print '''Not implement yet.'''
-        pass
 
     def do_report(self, line):  # design how to report
         ''''''
         print '''Not implement yet.'''
-        pass
 
     def do_aslr(self, line):
         '''Check status/Turn on/Turn off ASLR of system.

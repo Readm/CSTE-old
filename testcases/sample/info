@@ -8,7 +8,7 @@ run_vul: ./bin/vul
 # Command for exploit program, from current path. Remove the '#' if needed.
 # run_exp: ./bin/exp
 # Delay before run_exp(wait for run_vul) (second):
-# exp_delay: aa
+# exp_delay: 1
 
 # Command for check program, from current path.
 run_check: ./bin/check
@@ -31,7 +31,7 @@ stack: off
 log: ./log.txt
 
 # Tags
-tag: stack_overflow, code_injection
+tag: stack_overflow, code_injection, sample
 
 # Release or alpha version:
 release: no

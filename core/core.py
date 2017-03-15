@@ -21,11 +21,11 @@ class Case():
         release: bool
     '''
     def __init__(self,abs_path):
-        try:
+        #try:
             self.path = abs_path
             self.load_info()
-        except:
-            print '[Error]: Load %s failed. Please check it.' % abs_path
+        #except Exception, e:
+         #   print '[Warning]: Load %s failed. Please check it.' % abs_path
 
     def load_info(self):
         '''Load info file'''
@@ -40,12 +40,20 @@ class Case():
                     k_v[k.strip()] = v.strip()
             # bool convert
             for item in ['aslr','dep','stack','release']:
-                if k_v[item].lower() in ['on','yes']:
-                    k_v[item]=True
-                elif k_v[item].lower() in ['off','no']:
-                    k_v[item]=False
-                else:
-                    k_v[item]=None
+                if item in k_v.keys():
+                    if k_v[item].lower() in ['on','yes']:
+                        k_v[item]=True
+                    elif k_v[item].lower() in ['off','no']:
+                        k_v[item]=False
+                    else:
+                        k_v[item]=None
+            # int convert
+            for item in ['exp_delay','check_delay']:
+                if item in k_v.keys():
+                    try:
+                        k_v[item] = int(k_v[item])
+                    except:
+                        pass # this will be checked in the check_define
             # assignment
             for (k,v) in k_v.items():
                 setattr(self,k,v)
@@ -73,6 +81,8 @@ class Case():
     def run(self, attack=True, attach=False):
         if not self.check_define():
             print '[Error]: Failed check the info file. Stop.'
+            return
+
         with open(self.path+'/default.cfg','r') as default_f:
             lines = default_f.readlines()
             with open(self.path+'/run.cfg','w') as run_f:
@@ -95,34 +105,32 @@ class Case():
                 time.sleep(self.exp_delay)
             os.popen(new_terminal_exit(self.run_exp))
 
-
-
     def compile(self,dep=None,stack=None):  # TODO did compile finish? we may run it in current process to make sure.
         if hasattr(self, 'run_exp'):
             os.popen(new_terminal_exit(self.compile))
 
-
     def check(self):
         '''Return check answer.'''
+        if hasattr(self,'check_delay'):
+            time.sleep(self.check_delay)
         p = subprocess.Popen(self.run_check, stdout=subprocess.PIPE, shell= True)
         res = p.stdout.read().strip()
         return res
 
-
-    def log(self):
+    def str_log(self):
         '''Return string in log file'''
-        pass
+        with open(self.path+'/'+self.log) as f:
+            return f.read()
+
 
     @property
-    def tag(self):
+    def tags(self):
         '''Return list of tags'''
-        return []
-        pass
+        if hasattr(self,'tag'):
+            return [i.strip() for i in self.tag.split(',')]
+        else:
+            return []
 
-    @property
-    def release(self):
-        '''Return True or False'''
-        return
 
 def list_cases(path):
     '''Find all cases in the path'''
@@ -143,9 +151,8 @@ def list_cases(path):
 
 
 
-#if __name__=='__main__':
-    #pass
-    #c = Case("/home/readm/CSTE/testcases/sample")
+if __name__=='__main__':
+    c = Case("/home/readm/CSTE/testcases/sample")
     #c.run()
     #c.check_define(check_optional=True)
     #print list_cases('/home/readm/CSTE/testcases')
