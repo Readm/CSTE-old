@@ -10,6 +10,40 @@ class ui(cmd.Cmd):
     def do_show(self):
         pass
 
+    def do_guide(self):
+        pass
+
+    def do_select(self):
+        '''Select by number/path/tag'''
+        pass
+
+    def do_run(self):
+        pass
+
+    def do_add(self):
+        '''Add cases after select'''
+        pass
+
+    def do_remove(self):
+        '''Remove cases after select'''
+        pass
+
+    def do_report(self): #design how to report
+        ''''''
+        pass
+
+    def do_aslr(self):
+        pass
+
+    def do_attach(self):
+        pass
+
+    def do_q(self):
+        '''Quit'''
+        return True
+
+    def do_info(self):
+        '''Show info of cases'''
 
 
 

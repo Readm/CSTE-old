@@ -88,7 +88,8 @@ class Case():
         '''Return True or False'''
         return
 
-
+def list_cases(path):
+    '''Find all cases in the path'''
 
 
 if __name__=='__main__':
