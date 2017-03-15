@@ -7,9 +7,13 @@ intro: Sample of test case, stack_overflow and code_injection.
 run_vul: ./bin/vul
 # Command for exploit program, from current path. Remove the '#' if needed.
 # run_exp: ./bin/exp
+# Delay before run_exp(wait for run_vul) (second):
+# exp_delay: aa
 
 # Command for check program, from current path.
-check: ./bin/check
+run_check: ./bin/check
+# Delay before check(wait for run_vul and run_exp) (second):
+# check_delay: 1
 
 # Command for compile, from current path.
 compile: gcc ./src/vul.c -o ./bin/vul -g ; gcc ./src/check.c -o ./bin/check
