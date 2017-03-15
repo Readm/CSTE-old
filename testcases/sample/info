@@ -1,5 +1,8 @@
 # Information of the test case. '#' for comments.
 
+# Introduction of the test case.
+intro: Sample of test case, stack_overflow and code_injection.
+
 # Command for vulnerability program, from current path.
 run_vul: ./bin/vul
 # Command for exploit program, from current path. Remove the '#' if needed.
@@ -11,13 +14,13 @@ check: ./bin/check
 # Command for compile, from current path.
 compile: gcc ./src/vul.c -o ./bin/vul -g ; gcc ./src/check.c -o ./bin/check
 
-# ASLR requirement: on / off / optional
+# ASLR requirement: on / off
 aslr: off
 
-# DEP requirement: on / off / optional
+# DEP requirement: on / off
 dep: off
 
-# Stack Canary requirement: on / off / optional
+# Stack Canary requirement: on / off
 stack: off
 
 # Log file
